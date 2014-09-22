@@ -1,0 +1,124 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Snow.ViewModels.BaseViewModel>
+@using System.Collections.Generic
+@{
+    var keywords = String.Join(",", Model.Keywords);
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="last-modified" content="@Model.GeneratedDate" />
+    <meta name="keywords" content="@keywords" />
+
+    <link rel="me" type="text/html" href="http://profiles.google.com/111921850235601785063?rel=me">
+    
+    <title>Magnus Lindhe</title>
+
+    <link href="/stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/stylesheets/github.css" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/styles.css" type="text/css" />
+
+    @Html.CanonicalUrl()
+</head>
+<body>
+    <div class="container">
+        <!-- row 1: navigation -->
+        <div class="row">
+            <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="http://magnuslindhe.com">Magnus Lindhe</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="http://about.me/magnus.lindhe">About</a></li>
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown">Categories <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    @foreach (var category in Model.AllCategories)
+                                    {
+                                        <li>
+                                            <a href="/category/@category.Url" title="@category.Name">@category.Name</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                            <li><a href="/archive">Archive</a></li>
+                            <li><a href="/feed.xml">RSS</a></li>
+                        </ul>
+
+                        <div class="navbar-right">
+                            <a class="navbar-custom-button" href="http://twitter.com/LindheMagnus" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://twitter.com']);"><img src="/stylesheets/images/twitter.png"></a>
+                            <a class="navbar-custom-button" href="https://github.com/mgnslndh" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://github.com']);"><img src="/stylesheets/images/github.png"></a>
+                            <a class="navbar-custom-button" href="http://stackoverflow.com/users/966/magnus-lindhe" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://stackoverflow.com']);"><img src="/stylesheets/images/stackoverflow.png"></a>
+                            <a class="navbar-custom-button" href="https://www.linkedin.com/in/magnuslindhe" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://www.linkedin.com']);"><img src="/stylesheets/images/linkedin.png"></a>
+                            <a class="navbar-custom-button" href="https://plus.google.com/111921850235601785063/?rel=me" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://plus.google.com']);"><img src="/stylesheets/images/googleplus.png"></a>
+                        </div>
+                    </div><!--collapse -->
+                </div>
+            </nav>
+        </div><!--row -->
+        <!-- row 2: header -->
+        <header class="row">
+            <a href="/" title="Home"><img width="60" height="60" src="http://www.gravatar.com/avatar/0e3c0b107d46db01b286fb5de685cd51.png" title="logo"></a>
+            <h1 class="blog-title">
+                <a href="/" title="Magnus Lindhe" rel="home">Magnus Lindhe</a>
+            </h1>
+            <!--<p class="lead blog-description">something about nothing</p>-->
+        </header>
+
+        <!-- row 3: featured -->
+        <div class="row">
+            @RenderSection("featured", false)
+        </div>
+
+        <!-- row 4: body -->
+        <div class="row">
+            @RenderBody()
+        </div>
+
+        <hr>
+
+        <footer>
+            <div class="row">
+                <p class="text-center">Powered by <a href="https://github.com/Sandra/Sandra.Snow" rel="generator">Sandra.Snow</a>. Theme by <a href="http://www.michael-whelan.net/">Michael Whelan</a></p>
+                <p class="text-center">
+                    The opinions expressed herein are <a title="Magnus Lindhe" href="http://profiles.google.com/111921850235601785063?rel=me">my</a> own personal opinions and do not represent my employer's view in any way.<br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+                </p>
+            </div>
+            <div class="row center-block">
+                <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img class="center-block" alt="Creative Commons License" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+            </div>
+        </footer>
+    </div> <!-- /container -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/prettify.js"></script>
+
+    @Html.RenderGoogleAnalytics("UA-27328640-1")
+
+    <script type='text/javascript'>
+        $(function () {
+            $("pre code").parent().each(function () {
+                if (!$(this).hasClass("prettyprint")) {
+                    $(this).addClass("prettyprint");
+                    a = true
+                }
+            });
+
+            prettyPrint();
+        });
+    </script>
+        
+    <!-- Authorship Google -->
+    <a style="display: block; width: 30px; height: 30px; text-indent: -999px; text-decoration: none" href="http://profiles.google.com/111921850235601785063?rel=author">Google</a>
+</body>
+</html>
