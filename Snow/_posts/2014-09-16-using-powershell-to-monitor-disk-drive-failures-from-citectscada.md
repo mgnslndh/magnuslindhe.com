@@ -10,7 +10,7 @@ Today a colleague of mine asked for help with creating a Powershell script for m
 
 <!--excerpt-->
 
-We created a function `Evaluate-DiskAlarm` that would evaluate the alarm status of a specified disk. The `Evaluate-DiskAlarm` function in turn depends on another function `Set-Alarm` that writes the alarm state for a disk drive to an INI file. CitectSCADA has nice API for reading INI files so this seemed like a good fit. 
+We created a function `Evaluate-DiskAlarm` that would evaluate the alarm status of a specified disk. The `Evaluate-DiskAlarm` function in turn depends on another function `Set-Alarm` that writes the alarm state for a disk drive to an INI file. CitectSCADA has nice API for reading INI files so this seemed like a good fit. The source `Server Administrator` is a Dell Disk Controller. 
 
 	function Evaluate-DiskAlarm ($disk) 
 	{    
