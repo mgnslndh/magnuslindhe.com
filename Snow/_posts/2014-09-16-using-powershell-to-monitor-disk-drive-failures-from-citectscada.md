@@ -2,7 +2,6 @@
 layout: post
 tags: CitectSCADA, VijeoSCADA, Schneider Electric, Citect, SCADA, Powershell, Scripting
 categories: Automation
-published: draft
 title: Using Powershell to monitor disk drive failures from CitectSCADA
 ---
 
@@ -10,16 +9,16 @@ Today a colleague of mine asked for help with creating a Powershell script for m
 
 <!--excerpt-->
 
-We created a function `Evaluate-DiskAlarm` that would evaluate the alarm status of a specified disk. The `Evaluate-DiskAlarm` function in turn depends on another function `Set-Alarm` that writes the alarm state for a disk drive to an INI file. CitectSCADA has nice API for reading INI files so this seemed like a good fit. The source `Server Administrator` is a Dell Disk Controller. 
+We created a function `Evaluate-DiskAlarm` that would evaluate the alarm status of a specified disk. The `Evaluate-DiskAlarm` function in turn depends on another function `Set-Alarm` that writes the alarm state for a disk drive to an INI file. CitectSCADA has nice API for reading INI files so this seemed like a good fit. The source `Server Administrator` is a Dell Disk Controller.
 
-	function Evaluate-DiskAlarm ($disk) 
-	{    
+	function Evaluate-DiskAlarm ($disk)
+	{
 	    $onMessage = "Device failed:  Physical Disk {0}*" -f $disk
 	    $offMessage = "Device returned to normal:  Physical Disk {0}*" -f $disk
-	
+
 	    $on = Get-EventLog -logname System -source "Server Administrator" -newest 1 -message $onMessage
-	    $off = Get-EventLog -logname System -source "Server Administrator" -newest 1 -message $offMessage 
-	
+	    $off = Get-EventLog -logname System -source "Server Administrator" -newest 1 -message $offMessage
+
 	    if(!$on)
 	    {
 	        Set-Alarm $disk "Off"
@@ -27,7 +26,7 @@ We created a function `Evaluate-DiskAlarm` that would evaluate the alarm status 
 	    elseif($on -and !$off)
 	    {
 	        Set-Alarm $disk "On"
-	    }    
+	    }
 	    elseif($off.TimeGenerated -ge $on.TimeGenerated)
 	    {
 	        Set-Alarm $disk "Off"
@@ -35,7 +34,7 @@ We created a function `Evaluate-DiskAlarm` that would evaluate the alarm status 
 	    else
 	    {
 	        Set-Alarm $disk "On"
-	    }           
+	    }
 	}
 
 The scheduled script must make calls to `Evaluate-DiskAlarm` and provide an identification of each disk that should be monitored. The events we are looking for use three numbers separated by colons to identify the disks:
@@ -53,9 +52,9 @@ I came up with a tiny script fetches information of the installed disk drives an
 
 	function Export-DiskStatus ($path)
 	{
-		Get-WmiObject -class Win32_DiskDrive | 
-		Select DeviceId, Caption, Capabilities, ConfigManagerErrorCode, ErrorCleared, LastErrorCode, NeedsCleaning, Status | 
-		%{ $_ | Add-Member NoteProperty SmartEnabled ($_.Capabilities -contains 10); $_ } | 
+		Get-WmiObject -class Win32_DiskDrive |
+		Select DeviceId, Caption, Capabilities, ConfigManagerErrorCode, ErrorCleared, LastErrorCode, NeedsCleaning, Status |
+		%{ $_ | Add-Member NoteProperty SmartEnabled ($_.Capabilities -contains 10); $_ } |
 		Select * -Exclude Capabilities |
 		Export-Csv $path
 	}
